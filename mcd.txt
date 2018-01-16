@@ -1,0 +1,8 @@
+%  Modèle Conceptuel de Données réalisé avec Mocodo (http://http://mocodo.wingi.net/)
+%  ----------------------------------------------------------
+GROUPE: id_groupe[INTEGER(10)],nom_groupe[VARCHAR(50)]
+appartient, 01 BUDGET, 1N GROUPE
+BUDGET: id_budget[INTEGER(10)],nom_budget[VARCHAR(50)]
+
+PERIODICITE: id_periodicite[INTEGER(10)], duree_periodicite
+MOYEN_PAIEMENT:id_m_paiement[INTEGER(10)],nom_m_paiement[VARCHAR(50)]
