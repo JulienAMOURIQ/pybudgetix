@@ -4,8 +4,8 @@ import sqlite3
 
 
 def cree_base(connexion):
-	cur=connexion.cursor()
-	cur.executescript("""
+    cur=connexion.cursor()
+    cur.executescript("""
 CREATE TABLE GROUPE(
 	id_groupe   		INTEGER NOT NULL,
 	nom_groupe  		TEXT ,

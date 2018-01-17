@@ -1,8 +1,13 @@
 %  Modèle Conceptuel de Données réalisé avec Mocodo (http://http://mocodo.wingi.net/)
 %  ----------------------------------------------------------
 GROUPE: id_groupe[INTEGER(10)],nom_groupe[VARCHAR(50)]
-appartient, 01 BUDGET, 1N GROUPE
+appartient, 11 BUDGET, 0N GROUPE
 BUDGET: id_budget[INTEGER(10)],nom_budget[VARCHAR(50)]
 
-PERIODICITE: id_periodicite[INTEGER(10)], duree_periodicite
-MOYEN_PAIEMENT:id_m_paiement[INTEGER(10)],nom_m_paiement[VARCHAR(50)]
+M_PAIEMENT:id_m_paiement[INTEGER(10)],nom_m_paiement[VARCHAR(50)]
+df,0n M_PAIEMENT, 11 payer
+payer,1n BUDGET, 1n DATE : montant,date_fin
+
+df,0n PERIODICITE, 11 payer
+PERIODICITE: id_periodicite[INTEGER(10)], taille_periodicite[INTEGER(10)]
+DATE:date_debut[date]
