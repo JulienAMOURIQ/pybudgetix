@@ -1,3 +1,11 @@
+%DF:
+%(id_groupe)                 ->[nom_groupe]
+%(id_budget)                 ->[nom_budget]
+%(id_periodicite)            ->[nom_périodicité, taille_périodicité]
+%(id_m_paiement)             ->[nom_m_paiement]
+%(id_budget, id_m_paiement)  ->[id_periodicite, montant]
+
+
 %  Modèle Conceptuel de Données réalisé avec Mocodo (http://http://mocodo.wingi.net/)
 %  ----------------------------------------------------------
 GROUPE: id_groupe[INTEGER(10)],nom_groupe[VARCHAR(50)]
