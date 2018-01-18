@@ -77,8 +77,8 @@ def sql_inserer_m_paiement(connexion, id_m_paiement, nom_m_paiement):
 
     """
     cur = connexion.cursor()
-    cur.execute("INSERT INTO M_PAIEMENNT(id_m_paiement,nom_m_paiement)VALUES(?)",
-                (id_m_paiement, nom_m_paiement))
+    cur.execute("INSERT INTO M_PAIEMENNT(id_m_paiement,nom_m_paiement)" +
+                "VALUES(?)", (id_m_paiement, nom_m_paiement))
     print(cur.fetchone())
 
 
@@ -106,7 +106,8 @@ def sql_inserer_paiement(connexion, instance_paiement):
 
     """
     cur = connexion.cursor()
-    cur.execute("INSERT INTO payer(id_budget,id_m_paiement,id_periodicite,montant)VALUES(?)",
+    cur.execute("INSERT INTO payer" +
+                "(id_budget,id_m_paiement,id_periodicite,montant)VALUES(?)",
                 (instance_paiement.get_id_budget(),
                  instance_paiement.get_m_paiement(),
                  instance_paiement.get_id_periodicite(),
@@ -187,7 +188,7 @@ class LigneBudget(object):
 
 def main():
     """
-
+    Permet d'intéragir avec la base de données en console
     """
     import argparse
     parser = argparse.ArgumentParser()
