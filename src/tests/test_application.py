@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-module test
+module test Pytest
 """
 
-from goupilsoft import budget
+#from goupilsoft import pybudgetix
 
 def test_cree_base():
     """
