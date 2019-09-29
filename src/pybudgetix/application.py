@@ -45,7 +45,7 @@ CREATE TABLE PERIODICITE(
     nom_periodicite		TEXT ,
     taille_periodicite	INTEGER ,
 
-    PRIMARY KEY (id_perio)
+    PRIMARY KEY (id_periodicite)
 );
 
 
@@ -69,32 +69,31 @@ def sql_inserer_groupe(connexion, nom_groupe):
     """Cette fonction permet d'insérer un groupe dans la base de données."""
     cur = connexion.cursor()
     cur.execute("INSERT INTO GROUPE(nom_groupe)VALUES(?)", (nom_groupe, ))
-    # print(cur.fetchone())
 
 
 def sql_inserer_m_paiement(connexion, nom_m_paiement):
     """Cette fonction permet d'insérer un moyen de paiement dans la BDD."""
     cur = connexion.cursor()
     cur.execute("INSERT INTO M_PAIEMENT(nom_m_paiement)" +
-                "VALUES(?)", (nom_m_paiement))
-    print(cur.fetchone())
+                "VALUES(?)", (nom_m_paiement,))
 
 
-def sql_inserer_budget(connexion, nom_budget):
+def sql_inserer_budget(connexion, obj_budget):
     """Cette fonction permet d'insérer un budget dans la BDD."""
     cur = connexion.cursor()
-    cur.execute("INSERT INTO BUDGET(nom_budget)VALUES(?)", (nom_budget, ))
+    cur.execute("INSERT INTO BUDGET(nom_budget)VALUES(?)",
+                (obj_budget.get_nom, ))
+    cur.execute("INSERT INTO ")
     print(cur.fetchone())
 
 
-def sql_inserer_periodicite(connexion, nom_periode, taile_periode):
+def sql_inserer_periodicite(connexion, nom_periode, taille_periode):
     """
 
     """
     cur = connexion.cursor()
-    cur.execute("INSERT INTO PERIODICITE(nom_perio,taille_perio)VALUES(?)",
-                (nom_periode, taile_periode))
-    print(cur.fetchone())
+    cur.execute("""INSERT INTO PERIODICITE(nom_periodicite,taille_periodicite)
+                    VALUES(?,?)""", (nom_periode, taille_periode))
 
 
 def sql_inserer_paiement(connexion, instance_paiement):
@@ -118,7 +117,19 @@ def sql_lire_groupe(connexion):
     """
     cur = connexion.cursor()
     cur.execute("SELECT * FROM GROUPE")
-    print(cur.fetchall())
+    return(cur.fetchall())
+
+
+def sql_lire_m_paiement(connexion):
+    cur = connexion.cursor()
+    cur.execute("SELECT * FROM M_PAIEMENT")
+    return(cur.fetchall())
+
+
+def sql_lire_periodicite(connexion):
+    cur = connexion.cursor()
+    cur.execute("SELECT * FROM PERIODICITE")
+    return(cur.fetchall())
 
 
 def sql_to_budget(connexion):
@@ -136,6 +147,9 @@ class Budget(object):
         """Constructeur par défaut du budget."""
         self._lignes_budget = []
         self._nom = ""
+
+    def get_nom(self):
+        return self._nom
 
     def get_bilan(self, date_du_jour):
         """
