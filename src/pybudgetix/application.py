@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Module de gestion du modèle
+Module de gestion du modèle.
 """
 import sqlite3
+# import gettext
+# gettext.install('application', '../../langue')
 
 
 def cree_base(connexion):
     """
-    Fonction pour créer une base vide où enregistrer les données sur le
-    disque dur
+    Fonction pour créer une base vide .
+    Cette base permettra d' enregistrer les données sur le disque dur.
     """
     cur = connexion.cursor()
     cur.executescript("""
@@ -64,28 +66,22 @@ CREATE TABLE payer(
 
 
 def sql_inserer_groupe(connexion, nom_groupe):
-    """
-
-    """
+    """Cette fonction permet d'insérer un groupe dans la base de données."""
     cur = connexion.cursor()
     cur.execute("INSERT INTO GROUPE(nom_groupe)VALUES(?)", (nom_groupe, ))
     # print(cur.fetchone())
 
 
-def sql_inserer_m_paiement(connexion, id_m_paiement, nom_m_paiement):
-    """
-
-    """
+def sql_inserer_m_paiement(connexion, nom_m_paiement):
+    """Cette fonction permet d'insérer un moyen de paiement dans la BDD."""
     cur = connexion.cursor()
-    cur.execute("INSERT INTO M_PAIEMENNT(id_m_paiement,nom_m_paiement)" +
-                "VALUES(?)", (id_m_paiement, nom_m_paiement))
+    cur.execute("INSERT INTO M_PAIEMENT(nom_m_paiement)" +
+                "VALUES(?)", (nom_m_paiement))
     print(cur.fetchone())
 
 
 def sql_inserer_budget(connexion, nom_budget):
-    """
-
-    """
+    """Cette fonction permet d'insérer un budget dans la BDD."""
     cur = connexion.cursor()
     cur.execute("INSERT INTO BUDGET(nom_budget)VALUES(?)", (nom_budget, ))
     print(cur.fetchone())
@@ -134,16 +130,19 @@ def sql_to_budget(connexion):
 
 
 class Budget(object):
-    """
+    """Un budget regroupe plusieurs lignes de budget."""
 
-    """
     def __init__(self):
+        """Constructeur par défaut du budget."""
         self._lignes_budget = []
         self._nom = ""
 
     def get_bilan(self, date_du_jour):
         """
+        Permet d'obtenir le bilan du budget.
 
+        @Param date_du_jour: Date du jour dont on veut le bilan.
+        @Retrun Montant économisé à la date du jour.
         """
         somme = 0
         for elmnt in self._lignes_budget:
@@ -151,9 +150,7 @@ class Budget(object):
         return somme
 
     def get_bilan_quotidien(self):
-        """
-
-        """
+        """Le bilan quotidien est la somme économisée chaque jour."""
         somme = 0
         for elmnt in self._lignes_budget:
             somme = somme + elmnt.get_bilan_quotidien()
@@ -162,9 +159,15 @@ class Budget(object):
 
 class LigneBudget(object):
     """
+        La classe LigneBudget permet d'enregistrer une ligne du budget.
 
+        Chaque ligne est définie par un identifiant, un nom,
+        un début de période, une périodicité, un groupe, un montant
+        des échéances et un moyen de paiement.
     """
+
     def __init__(self):
+        """Constructeur par défaut."""
         self._id_budget = -1
         self._nom_budget = ""
         self._date_debut_periode = -1
@@ -186,11 +189,16 @@ class LigneBudget(object):
         return self.get_bilan_quotidien*(date_du_jour-self._date_debut_periode)
 
 
+def exportcsv(connexion):
+    """Exporte le contenu de la base en fichier csv."""
+    pass
+
+
 def main():
-    """
-    Permet d'intéragir avec la base de données en console
-    """
+    """Permet d'intéragir avec la base de données en console."""
     import argparse
+
+    NOM_BASE = "example.db"
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-init', help="Crée un nouveau fichier de données",
@@ -198,18 +206,51 @@ def main():
     parser.add_argument('-ig', help="Insérer un groupe", required=False)
     parser.add_argument('-id', help="Insérer un poste de dépense",
                         required=False)
+    parser.add_argument('-im', help="Insérer un moyen de paiement",
+                        required=False)
+    parser.add_argument('-lb', help="Lire le bilan du budget à la date",
+                        required=False)
+    parser.add_argument('-importcsv', help="""Importer les données depuis un ficher csv.
+                        la première colonne donne le nom du budget,
+                        la seconde le groupe,
+                        la troisième le montant du budget,
+                        la quatrième le moyen de paiement
+                        la cinquième la périodicité,
+                        la sixième la date de début """,
+                        required=False)
+    parser.add_argument('-exportcsv', help="""Exporter les données vers un ficher csv.
+                        la première colonne donne le nom du budget,
+                        la seconde le groupe,
+                        la troisième le montant du budget,
+                        la quatrième le moyen de paiement
+                        la cinquième la périodicité,
+                        la sixième la date de début """,
+                        required=False)
     args = parser.parse_args()
     print("Initialisation...")
+    conn = sqlite3.connect(NOM_BASE)
     if args.init:
-        conn = sqlite3.connect('example.db')
         cree_base(conn)
         conn.commit()
-        conn.close()
 
     if args.ig:
-        conn = sqlite3.connect('example.db')
         sql_inserer_groupe(conn, args.ig)
+        conn.commit()
 
+    if args.im:
+        sql_inserer_m_paiement(conn, args.im)
+        conn.commit()
+
+    if args.lb:
+        pass
+
+    if args.importcsv:
+        pass
+
+    if args.exportcsv:
+        pass
+
+    conn.close()
     #   conn = sqlite3.connect('example.db')
     #   sql_inserer_groupe(conn,"Voiture")
     #   sql_lire_groupe(conn)

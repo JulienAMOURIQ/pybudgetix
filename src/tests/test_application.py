@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-module test Pytest
+module test Pytest.
 """
 
-#from goupilsoft import pybudgetix
+# from goupilsoft import pybudgetix
+
 
 def test_cree_base():
     """
-        Un premier test
+    Un premier test.
     """
     import sys
     print(sys.version)
     assert 1 == 1
-    
