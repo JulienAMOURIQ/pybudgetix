@@ -45,7 +45,7 @@ CREATE TABLE PERIODICITE(
     nom_periodicite		TEXT ,
     taille_periodicite	INTEGER ,
 
-    PRIMARY KEY (id_perio)
+    PRIMARY KEY (id_periodicite)
 );
 
 
@@ -118,7 +118,7 @@ def sql_lire_groupe(connexion):
     """
     cur = connexion.cursor()
     cur.execute("SELECT * FROM GROUPE")
-    print(cur.fetchall())
+    return(cur.fetchall())
 
 
 def sql_to_budget(connexion):
