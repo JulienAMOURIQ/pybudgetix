@@ -18,9 +18,7 @@ class TestDefaultSuite():
         os.remove('test.db')
 
     def test_inserer_groupe(self):
-        """
-        Un premier test.
-        """
+        """Un premier test."""
         application.sql_inserer_groupe(self.conn, "Voiture")
         application.sql_inserer_groupe(self.conn, "Logement")
         self.conn.commit()

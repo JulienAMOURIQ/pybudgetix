@@ -22,6 +22,13 @@ CREATE TABLE GROUPE(
     PRIMARY KEY (id_groupe)
 );
 
+CREATE TABLE IMPUTATION(
+    id_imputation 		INTEGER NOT NULL,
+    nom_imputation 		TEXT,
+
+    PRIMARY KEY (id_imputation)
+);
+
 CREATE TABLE M_PAIEMENT(
     id_m_paiement 		INTEGER NOT NULL,
     nom_m_paiement 		TEXT,
@@ -33,10 +40,12 @@ CREATE TABLE M_PAIEMENT(
 CREATE TABLE BUDGET(
     id_budget           INTEGER NOT NULL ,
     id_groupe           INTEGER NOT NULL,
+    id_imputation       INTEGER NOT NULL,
     nom_budget          TEXT ,
 
     PRIMARY KEY (id_budget),
-    FOREIGN KEY (id_groupe)         REFERENCES GROUPE       (id_groupe)
+    FOREIGN KEY (id_groupe)         REFERENCES GROUPE       (id_groupe),
+    FOREIGN KEY (id_imputation)     REFERENCES IMPUTATION   (id_imputation)
 );
 
 
@@ -48,17 +57,27 @@ CREATE TABLE PERIODICITE(
     PRIMARY KEY (id_periodicite)
 );
 
+CREATE TABLE imputer(
+    id_budget           INTEGER NOT NULL,
+    id_imputation       INTEGER NOT NULL,
+    date                DATE,
+    montant             INTEGER,
+
+    PRIMARY KEY (id_budget,date),
+    FOREIGN KEY (id_budget)         REFERENCES BUDGET       (id_budget),
+    FOREIGN KEY (id_imputation)     REFERENCES IMPUTATION   (id_imputation)
+);
 
 CREATE TABLE payer(
     id_budget           INTEGER NOT NULL ,
-    id_m_paiement       INTEGER NOT NULL ,
     id_periodicite      INTEGER NOT NULL ,
-    montant             INTEGER ,
+    montant             INTEGER,
+    date_debut          DATE,
+    date_fin            DATE,
 
-    PRIMARY KEY (id_budget, id_m_paiement) ,
+    PRIMARY KEY (id_budget, date_debut) ,
 
     FOREIGN KEY (id_budget)         REFERENCES BUDGET       (id_budget),
-    FOREIGN KEY (id_m_paiement)     REFERENCES M_PAIEMENT   (id_m_paiement),
     FOREIGN KEY (id_periodicite)    REFERENCES PERIODICITE  (id_periodicite)
 );
 
@@ -224,7 +243,7 @@ def main():
                         required=False)
     parser.add_argument('-lb', help="Lire le bilan du budget à la date",
                         required=False)
-    parser.add_argument('-importcsv', help="""Importer les données depuis un ficher csv.
+    parser.add_argument('-importcsv', help="""Importer depuis un csv.
                         la première colonne donne le nom du budget,
                         la seconde le groupe,
                         la troisième le montant du budget,
@@ -232,7 +251,7 @@ def main():
                         la cinquième la périodicité,
                         la sixième la date de début """,
                         required=False)
-    parser.add_argument('-exportcsv', help="""Exporter les données vers un ficher csv.
+    parser.add_argument('-exportcsv', help="""Exporter les données vers un csv.
                         la première colonne donne le nom du budget,
                         la seconde le groupe,
                         la troisième le montant du budget,
@@ -265,11 +284,7 @@ def main():
         pass
 
     conn.close()
-    #   conn = sqlite3.connect('example.db')
-    #   sql_inserer_groupe(conn,"Voiture")
-    #   sql_lire_groupe(conn)
-    #   conn.commit()
-    #   conn.close()
+
 
 if __name__ == '__main__':
     main()

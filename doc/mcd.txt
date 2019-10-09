@@ -1,21 +1,25 @@
 %DF:
-%(id_groupe)                 ->[nom_groupe]
-%(id_budget)                 ->[nom_budget]
-%(id_periodicite)            ->[nom_périodicité, taille_périodicité]
-%(id_m_paiement)             ->[nom_m_paiement]
-%(id_budget, id_m_paiement)  ->[id_periodicite, montant]
+%(id_groupe)                ->[nom_groupe]
+%(id_budget)                ->[nom_budget]
+%(id_budget)                ->[id_m_paiement]
+%(id_budget)                ->[id_groupe]
+%(id_imputation)            ->[nom_imputation]
+%(id_periodicite)           ->[nom_périodicité, taille_périodicité]
+%(id_m_paiement)            ->[nom_m_paiement]
+%(id_budget, date)          ->[id_imputation, montant]
+%(id_budget,date_debut)     ->[montant,date_fin,id_periodicite]
 
 
 %  Modèle Conceptuel de Données réalisé avec Mocodo (http://http://mocodo.wingi.net/)
 %  ----------------------------------------------------------
-GROUPE: id_groupe[INTEGER(10)],nom_groupe[VARCHAR(50)]
-appartient, 11 BUDGET, 0N GROUPE
-BUDGET: id_budget[INTEGER(10)],nom_budget[VARCHAR(50)]
+%GROUPE: id_groupe[INTEGER(10)],nom_groupe[VARCHAR(50)]
+%appartient, 11 BUDGET, 0N GROUPE
+%BUDGET: id_budget[INTEGER(10)],nom_budget[VARCHAR(50)]
 
-M_PAIEMENT:id_m_paiement[INTEGER(10)],nom_m_paiement[VARCHAR(50)]
-df,0n M_PAIEMENT, 11 payer
-payer,1n BUDGET, 1n DATE : montant,date_fin
+%M_PAIEMENT:id_m_paiement[INTEGER(10)],nom_m_paiement[VARCHAR(50)]
+%df,0n M_PAIEMENT, 11 payer
+%payer,1n BUDGET, 1n DATE : montant,date_fin
 
-df,0n PERIODICITE, 11 payer
-PERIODICITE: id_periodicite[INTEGER(10)], taille_periodicite[INTEGER(10)]
-DATE:date_debut[date]
+%df,0n PERIODICITE, 11 payer
+%PERIODICITE: id_periodicite[INTEGER(10)], taille_periodicite[INTEGER(10)]
+%DATE:date_debut[date]
