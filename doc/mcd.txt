@@ -3,10 +3,9 @@
 %(id_budget)                ->[nom_budget]
 %(id_budget)                ->[id_m_paiement]
 %(id_budget)                ->[id_groupe]
-%(id_imputation)            ->[nom_imputation]
 %(id_periodicite)           ->[nom_périodicité, taille_périodicité]
 %(id_m_paiement)            ->[nom_m_paiement]
-%(id_budget, date)          ->[id_imputation, montant]
+%(id_budget,date)           ->[commentaire, montant_imputé]
 %(id_budget,date_debut)     ->[montant,date_fin,id_periodicite]
 
 
